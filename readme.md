@@ -14,7 +14,7 @@ A client connects to the redis instance using redli (which is a command line too
 ## Implementation Details ##
 
 ![Ingress Flow]
-(./Layer4-Edge-Termination.png)
+(https://github.com/arbhoj/tcp-nginx-ingress/blob/master/Layer4-Edge-Termination.png)
 
 The solution leverages the following pieces:
 1. nginx Deployment – This deploys one or more nginx pods that load:
