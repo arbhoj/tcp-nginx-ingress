@@ -1,17 +1,20 @@
-#Layer 4 Edge Termination using Nginx Proxy on k8s#
+# Layer 4 Edge Termination using Nginx Proxy on k8s #
 
-##Overview##
+## Overview ##
 This document shows a method of using a Nginx Proxy server to perform layer 4 edge termination for a service running on Kubernetes. It uses a redis server as an example. This is a common scenario when the app/container itself does not provide TLS but all data coming from outside to the k8s cluster needs to be encrypted. 
 
 Note: To keep things simple, just a single worker node has been shown with a single redis pod and a single nginx proxy pod but it can be scaled to multiple nodes/pods. 
 
 
-##High Level Design and Flow##
+## High Level Design and Flow ##
 
 A client connects to the redis instance using redli (which is a command line tool that can be used to connect to a remote redis instance). The client uses the ip and port of the loadbalancer. The loadbalancer and it’s listeners are automatically created when a service of type LoadBalancer is created in k8s. In the above example a listener on load-balancer port 9999 is created that routes traffic to k8s worker nodes on port 32548 (this is the nodePort assigned to the loadbalancer service). This is the nodePort that routes traffic to the nginx-tcp-router Pod which has a configuration in the form of tcp-ingress Configmap that uses nginx’s streams to terminate TLS and proxy traffic to the myred service, which in turn routes traffic to the redis pod.
 
 
-##Implementation Details##
+## Implementation Details ##
+
+![Ingress Flow]
+(./Layer4-Edge-Termination.png)
 
 The solution leverages the following pieces:
 1. nginx Deployment – This deploys one or more nginx pods that load:
