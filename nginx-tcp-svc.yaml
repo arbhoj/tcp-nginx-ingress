@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
+  finalizers:
+  - service.kubernetes.io/load-balancer-cleanup
+  name: nginx-tcp
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 443
+  - name: myred
+    port: 9999
+    targetPort: 8379
+  selector:
+    run: nginx-tcp-router
+  sessionAffinity: None
+  type: LoadBalancer

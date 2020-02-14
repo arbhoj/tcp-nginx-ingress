@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  tcp-ingress.conf: |
+    upstream redis-tcp {
+      server myred.default.svc.cluster.local:7379;
+    }
+    server
+        {
+      listen 8379 ssl;
+      proxy_ssl off;
+      proxy_pass myred.default.svc.cluster.local:7379;
+    }
+kind: ConfigMap
+metadata:
+  name: tcp-ingress

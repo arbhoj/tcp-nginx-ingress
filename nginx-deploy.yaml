@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: nginx-tcp-router
+  name: nginx-tcp-router
+spec:
+  selector:
+    matchLabels:
+      run: nginx-tcp-router
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: nginx-tcp-router
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: IfNotPresent
+        name: nginx-tcp-router
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /tmp
+          name: ssl-cert-key
+          readOnly: true
+        - mountPath: /etc/nginx/nginx.conf
+          name: nginx-config
+          readOnly: true
+          subPath: nginx.conf
+        - mountPath: /mylog
+          name: mylog
+        - mountPath: /config
+          name: tcp-ingress
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: ssl-cert-key
+        secret:
+          defaultMode: 420
+          secretName: nginx-cert
+      - configMap:
+          defaultMode: 420
+          name: nginx-config
+        name: nginx-config
+      - emptyDir: {}
+        name: mylog
+      - configMap:
+          defaultMode: 420
+          name: tcp-ingress
+        name: tcp-ingress

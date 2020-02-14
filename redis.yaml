@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: myred
+  name: myred
+spec:
+  selector:
+    matchLabels:
+      run: myred
+  template:
+    metadata:
+      labels:
+        run: myred
+    spec:
+      containers:
+      - image: redis:latest
+        imagePullPolicy: Always
+        name: myred
