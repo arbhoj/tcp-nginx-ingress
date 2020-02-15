@@ -30,7 +30,12 @@ The solution leverages the following pieces:
 6. redis deployment to deploy a redis instance
 7. myred service that points to the redis pod
 
-Clone this repo into the machine that is configured to connect to a k8s cluster. CD to the package dir and run “kubectl apply -f .
+To deploy & Test:
+1. Clone this repo into the machine that is configured to connect to a k8s cluster. CD to the package dir and run “kubectl apply -f . Make sure that everything is deployed successfully and the nginx pod is running
+2. Install *redli* cli on your machine (https://github.com/IBM-Cloud/redli) and run the following command:
+   `./redli -u rediss://<load-balancer-ip>:9999 --long  --skipverify --tls`
+   This should connect you to the redis command prompt
+
 
 
 
