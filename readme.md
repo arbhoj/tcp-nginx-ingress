@@ -17,14 +17,14 @@ A client connects to the redis instance using redli (which is a command line too
 
 The solution leverages the following pieces:
 1. `nginx Deployment` – This deploys one or more nginx pods that load:
-   a. `nginx.conf` from the nginx-config configmap
-   b. `tcp-ingress.conf` from tcp-ingress configmap
-   c. `nginx-cert` secret to host the ca.key, server.crt and server.key to use for TLS
+  - `nginx.conf` from the nginx-config configmap
+  - `tcp-ingress.conf` from tcp-ingress configmap
+  - `nginx-cert` secret to host the ca.key, server.crt and server.key to use for TLS
 2. `nginx-config` Configmap – This contains: 
-   a. Contents of the nginx.conf to the used by the nginx proxy. 
-   b. A “stream” section with the certificate details with reference to include any configs loaded into the “/config” dir. This minimizes the amount of lines that need to be added to in tcp-ingress Configmap for each service port
+  - Contents of the nginx.conf to the used by the nginx proxy. 
+  - A “stream” section with the certificate details with reference to include any configs loaded into the “/config” dir. This minimizes the amount of lines that need to be added to in tcp-ingress Configmap for each service port
 3. `tcp-ingress` Configmap – This contains:
-   a. The “server” and the “upstream” portions of the “streams” directive.
+  - The “server” and the “upstream” portions of the “streams” directive.
 4. `nginx-cert` secret
 5. `nginx-tcp` service that defines a service of type loadbalancer
 6. `redis` deployment to deploy a redis instance
